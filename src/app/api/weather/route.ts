@@ -14,6 +14,7 @@ export async function GET(req: NextRequest) {
     ?latitude=${latitude}
     &longitude=${longitude}
     &current_weather=true
+    &timezone=auto
   `.replace(/\s+/g, "");
 
   try {
@@ -24,6 +25,7 @@ export async function GET(req: NextRequest) {
 
     const data = await response.json();
     return Response.json({
+      time: data.current_weather.time,
       temperature: data.current_weather.temperature,
       windspeed: data.current_weather.windspeed,
       weathercode: data.current_weather.weathercode,
