@@ -14,6 +14,7 @@ type WeatherData = {
 export default function Home() {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [location, setLocation] = useState<string>(LOCATIONS[0].name);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
   const fetchWeather = async () => {
     const selected = LOCATIONS.find((l) => l.name === location);
@@ -24,13 +25,23 @@ export default function Home() {
       );
       const data = await response.json();
       setWeather(data);
-
+      setLastUpdated(new Date());
       console.log("Weather Data:", data);
     } catch (error) {
-      console.error("Error fetching weather data:", error);
+      console.error(error);
       alert("Failed to fetch weather data. Please try again.");
     }
   };
+
+  function timeAgo(date: Date) {
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMinutes = Math.floor(diffMs / 60000);
+
+    if (diffMinutes < 1) return "just now";
+    if (diffMinutes < 60)
+      return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""} ago`;
+  }
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-cyan-100 to-blue-400">
@@ -55,6 +66,11 @@ export default function Home() {
             Check Weather
           </button>
         </div>
+        {lastUpdated && (
+          <p className="text-sm text-gray-500">
+            Last updated: {timeAgo(lastUpdated)}
+          </p>
+        )}
 
         {weather && (
           <>
@@ -100,6 +116,7 @@ export default function Home() {
             </div>
           </div>
         )}
+        <p className="text-sm text-gray-500">Data provided by Open-Meteo API</p>
       </div>
     </main>
   );
