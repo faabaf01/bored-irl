@@ -13,6 +13,18 @@ export const LOCATIONS: Location[] = [
     country: "Malaysia",
   },
   {
+    name: "Ampang",
+    latitude: 3.1417,
+    longitude: 101.7278,
+    country: "Malaysia",
+  },
+  {
+    name: "Tokyo",
+    latitude: 35.6762,
+    longitude: 139.6503,
+    country: "Japan",
+  },
+  {
     name: "Hokkaido",
     latitude: 43.0642,
     longitude: 141.3469,
@@ -31,9 +43,21 @@ export const LOCATIONS: Location[] = [
     country: "South Korea",
   },
   {
+    name: "Daegu",
+    latitude: 35.8722,
+    longitude: 128.6025,
+    country: "South Korea",
+  },
+  {
     name: "Medina",
     latitude: 24.5247,
     longitude: 39.5692,
+    country: "Saudi Arabia",
+  },
+  {
+    name: "Mecca",
+    latitude: 21.3891,
+    longitude: 39.8579,
     country: "Saudi Arabia",
   },
 ];

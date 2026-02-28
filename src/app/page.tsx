@@ -2,7 +2,7 @@
 
 import { isClear, isRaining, weatherInfoMap } from "@/lib/weather";
 import { LOCATIONS } from "@/lib/locations";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type WeatherData = {
   time: string;
@@ -32,6 +32,17 @@ export default function Home() {
       alert("Failed to fetch weather data. Please try again.");
     }
   };
+
+useEffect(() => {
+  if (!lastUpdated) return;
+
+  const interval = setInterval(() => {
+    // trigger re-render by updating state to the same value
+    setLastUpdated((prev) => (prev ? new Date(prev) : null));
+  }, 60000); // every 60 seconds
+
+  return () => clearInterval(interval); // cleanup on unmount
+}, [lastUpdated]);
 
   function timeAgo(date: Date) {
     const now = new Date();
@@ -68,7 +79,7 @@ export default function Home() {
         </div>
         {lastUpdated && (
           <p className="text-sm text-gray-500">
-            Last updated: {timeAgo(lastUpdated)}
+            Updated {timeAgo(lastUpdated)}
           </p>
         )}
 
