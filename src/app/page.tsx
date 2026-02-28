@@ -17,11 +17,13 @@ export default function Home() {
   const [location, setLocation] = useState<string>(LOCATIONS[0].name);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const fetchWeather = async () => {
     const selected = LOCATIONS.find((l) => l.name === location);
     if (!selected) return;
     try {
+      setLoading(true);
       const response = await fetch(
         `/api/weather?latitude=${selected.latitude}&longitude=${selected.longitude}`,
       );
@@ -32,18 +34,20 @@ export default function Home() {
     } catch (error) {
       console.error(error);
       setError("Failed to fetch weather data. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
-useEffect(() => {
-  if (!lastUpdated) return;
+  useEffect(() => {
+    if (!lastUpdated) return;
 
-  const interval = setInterval(() => {
-    setLastUpdated((prev) => (prev ? new Date(prev) : null));
-  }, 60000); // every 60 seconds
+    const interval = setInterval(() => {
+      setLastUpdated((prev) => (prev ? new Date(prev) : null));
+    }, 60000); // every 60 seconds
 
-  return () => clearInterval(interval); // cleanup on unmount
-}, [lastUpdated]);
+    return () => clearInterval(interval); // cleanup on unmount
+  }, [lastUpdated]);
 
   function timeAgo(date: Date) {
     const now = new Date();
@@ -54,24 +58,24 @@ useEffect(() => {
     if (diffMinutes < 60)
       return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""} ago`;
   }
-function formatDateTime(iso: string) {
-  const date = new Date(iso);
+  function formatDateTime(iso: string) {
+    const date = new Date(iso);
 
-  return {
-    date: date.toLocaleDateString(undefined, {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }),
-    time: date.toLocaleTimeString(undefined, {
-      hour: "2-digit",
-      minute: "2-digit",
-    }),
-  };
-}
+    return {
+      date: date.toLocaleDateString(undefined, {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+      time: date.toLocaleTimeString(undefined, {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+  }
 
-const formatted = formatDateTime(weather?.time || "");
+  const formatted = formatDateTime(weather?.time || "");
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-cyan-100 to-blue-400">
@@ -105,8 +109,8 @@ const formatted = formatDateTime(weather?.time || "");
             Updated {timeAgo(lastUpdated)}
           </p>
         )}
-
-        {weather && (
+        {loading && <WeatherSkeleton />}
+        {!loading && weather && (
           <>
             <div className="text-gray-600">
               {formatted.date}
@@ -128,7 +132,7 @@ const formatted = formatDateTime(weather?.time || "");
           </>
         )}
 
-        {weather && (
+        {!loading && weather && (
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="rounded-xl bg-white shadow p-4 flex flex-col items-center justify-center transition hover:scale-105">
               <span className="text-3xl mb-1">🌡️</span>
@@ -162,5 +166,31 @@ const formatted = formatDateTime(weather?.time || "");
         <p className="text-sm text-gray-500">Data provided by Open-Meteo API</p>
       </div>
     </main>
+  );
+}
+
+function WeatherSkeleton() {
+  return (
+    <div className="animate-pulse space-y-4">
+      <div className="mx-auto h-5 w-40 rounded bg-gray-200" />
+      <div className="mx-auto h-5 w-10 rounded bg-gray-200" />
+
+      {/* emoji */}
+      <div className="mx-auto h-20 w-20 rounded-full bg-gray-200" />
+
+      {/* label */}
+      <div className="mx-auto h-5 w-40 rounded bg-gray-200" />
+
+      {/* cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="h-28 rounded-xl bg-white/70 shadow p-4">
+            <div className="h-6 w-6 bg-gray-200 rounded mb-3 mx-auto" />
+            <div className="h-3 w-16 bg-gray-200 rounded mx-auto mb-2" />
+            <div className="h-4 w-12 bg-gray-200 rounded mx-auto" />
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
