@@ -25,6 +25,12 @@ export const LOCATIONS: Location[] = [
     country: "Japan",
   },
   {
+    name: "Osaka",
+    latitude: 34.6937,
+    longitude: 135.5023,
+    country: "Japan",
+  },
+  {
     name: "Hokkaido",
     latitude: 43.0642,
     longitude: 141.3469,
@@ -59,5 +65,11 @@ export const LOCATIONS: Location[] = [
     latitude: 21.3891,
     longitude: 39.8579,
     country: "Saudi Arabia",
+  },
+  {
+    name: "Brisbane",
+    latitude: -27.4698,
+    longitude: 153.0251,
+    country: "Australia",
   },
 ];

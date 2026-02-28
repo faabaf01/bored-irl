@@ -15,6 +15,7 @@ export async function GET(req: NextRequest) {
     &longitude=${longitude}
     &current_weather=true
     &timezone=auto
+    &current=is_day
   `.replace(/\s+/g, "");
 
   try {
@@ -29,6 +30,7 @@ export async function GET(req: NextRequest) {
       temperature: data.current_weather.temperature,
       windspeed: data.current_weather.windspeed,
       weathercode: data.current_weather.weathercode,
+      is_day: data.current_weather.is_day,
     });
   } catch (error) {
     console.error("Error fetching weather data:", error);
