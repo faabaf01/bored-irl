@@ -31,6 +31,12 @@ export const LOCATIONS: Location[] = [
     country: "Japan",
   },
   {
+    name: "Ibaraki",
+    latitude: 36.3418,
+    longitude: 140.4468,
+    country: "Japan",
+  },
+  {
     name: "Hokkaido",
     latitude: 43.0642,
     longitude: 141.3469,

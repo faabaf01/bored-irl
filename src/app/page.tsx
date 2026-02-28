@@ -1,6 +1,6 @@
 "use client";
 
-import { isClear, isRaining, weatherInfoMap } from "@/lib/weather";
+import { isClear, isRaining, getWeatherInfo } from "@/lib/weather";
 import { LOCATIONS } from "@/lib/locations";
 import { useEffect, useState } from "react";
 
@@ -39,7 +39,7 @@ useEffect(() => {
   if (!lastUpdated) return;
 
   const interval = setInterval(() => {
-    setLastUpdated((prev) => prev);
+    setLastUpdated((prev) => (prev ? new Date(prev) : null));
   }, 60000); // every 60 seconds
 
   return () => clearInterval(interval); // cleanup on unmount
@@ -54,9 +54,24 @@ useEffect(() => {
     if (diffMinutes < 60)
       return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""} ago`;
   }
-  function formatTime(date: Date) {
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  }
+function formatDateTime(iso: string) {
+  const date = new Date(iso);
+
+  return {
+    date: date.toLocaleDateString(undefined, {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }),
+    time: date.toLocaleTimeString(undefined, {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+  };
+}
+
+const formatted = formatDateTime(weather?.time || "");
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-cyan-100 to-blue-400">
@@ -93,20 +108,22 @@ useEffect(() => {
 
         {weather && (
           <>
-            <p>{weather.time}</p>
+            <div className="text-gray-600">
+              {formatted.date}
+              <br />
+              {formatted.time}
+            </div>
             <span className="text-7xl">
-              {weatherInfoMap[weather.weathercode]?.emoji}
+              {getWeatherInfo(weather.weathercode)?.emoji}
             </span>
             <p className="text-xl font-semibold">
-              {weatherInfoMap[weather.weathercode]?.label}
+              {getWeatherInfo(weather.weathercode)?.label}
             </p>
             {isRaining(weather.weathercode) && (
               <p className="text-gray-600">Don&apos;t forget your umbrella!</p>
             )}
             {isClear(weather.weathercode) && (
-              <p className="text-gray-600">
-                It&apos;s a clear day! Enjoy the sunshine!
-              </p>
+              <p className="text-gray-600">It&apos;s a clear day!</p>
             )}
           </>
         )}
