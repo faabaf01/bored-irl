@@ -1,12 +1,18 @@
-const RAIN_CODES = [61, 63, 65, 80, 81, 82];
+const RAIN_CODES = [61, 63, 65, 66, 67, 80, 81, 82];
 const STORM_CODES = [95, 96, 99];
+const DRIZZLE_CODES = [51, 53, 55, 56, 57];
+const SNOW_CODES = [71, 73, 75, 77, 85, 86];
+const FOG_CODES = [45, 48];
 const CLOUDY_CODES = [1, 2, 3];
 const CLEAR_CODES = [0];
 
 export const isRaining = (code: number) => RAIN_CODES.includes(code);
 export const isStormy = (code: number) => STORM_CODES.includes(code);
+export const isFoggy = (code: number) => FOG_CODES.includes(code);
 export const isCloudy = (code: number) => CLOUDY_CODES.includes(code);
 export const isClear = (code: number) => CLEAR_CODES.includes(code);
+export const isSnowing = (code: number) => SNOW_CODES.includes(code);
+export const isDrizzling = (code: number) => DRIZZLE_CODES.includes(code);
 
 export function getWeatherInfo(code: number) {
   if (code === 0) return { label: "Clear sky", emoji: "☀️" };
