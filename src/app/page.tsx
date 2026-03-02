@@ -15,9 +15,9 @@ import { useEffect, useState } from "react";
 
 type WeatherData = {
   time: string;
-  temperature: number;
-  windspeed: number;
-  weathercode: number;
+  temperature_2m: number;
+  wind_speed_10m: number;
+  weather_code: number;
   is_day: number;
 };
 
@@ -116,7 +116,7 @@ export default function Home() {
 
           {lastUpdated && (
             <p className="text-xs text-gray-500">
-              Updated {timeAgo(lastUpdated)}
+              Updated {timeAgo(lastUpdated)} • Data refreshes every 15 minutes
             </p>
           )}
 
@@ -141,44 +141,45 @@ export default function Home() {
                     {formatted.time}
                   </div>
                   <div className="py-4">
-                    <div className="text-7xl">
-                      {getWeatherInfo(weather.weathercode)?.emoji}
+                    <div className="text-7xl hover:scale-110 transition-transform">
+                      {getWeatherInfo(weather.weather_code)?.emoji}
                     </div>
                     <div className="text-xl font-semibold">
-                      {getWeatherInfo(weather.weathercode)?.label}
+                      {getWeatherInfo(weather.weather_code)?.label}
                     </div>
                   </div>
 
                   <div className="pb-4">
-                    {isRaining(weather.weathercode) && (
+                    {isRaining(weather.weather_code) && (
                       <p className="text-gray-600">
                         Don&apos;t forget your umbrella!
                       </p>
                     )}
-                    {isClear(weather.weathercode) && (
+                    {isClear(weather.weather_code) && (
                       <p className="text-gray-600">It&apos;s a clear day!</p>
                     )}
-                    {isFoggy(weather.weathercode) && (
+                    {isFoggy(weather.weather_code) && (
                       <p className="text-gray-600">
                         It&apos;s foggy outside, drive safely!
                       </p>
                     )}
-                    {isStormy(weather.weathercode) && (
+                    {isStormy(weather.weather_code) && (
                       <p className="text-gray-600">
                         There&apos;s a storm brewing, stay safe!
                       </p>
                     )}
-                    {isSnowing(weather.weathercode) && (
+                    {isSnowing(weather.weather_code) && (
                       <p className="text-gray-600">
                         Snow is falling, stay warm!
                       </p>
                     )}
-                    {isDrizzling(weather.weathercode) && (
+                    {isDrizzling(weather.weather_code) && (
                       <p className="text-gray-600">
-                        It&apos;s drizzling, a light rain is expected!
+                        There&apos;s nothing more peaceful than a slow, drizzly
+                        day.
                       </p>
                     )}
-                    {isCloudy(weather.weathercode) && (
+                    {isCloudy(weather.weather_code) && (
                       <p className="text-gray-600">
                         It&apos;s cloudy, a calm day ahead!
                       </p>
@@ -190,7 +191,7 @@ export default function Home() {
                       <span className="text-3xl mb-1">🌡️</span>
                       <p className="text-sm text-gray-500">Temperature</p>
                       <p className="text-xl font-semibold">
-                        {weather.temperature}°C
+                        {weather.temperature_2m}°C
                       </p>
                     </div>
 
@@ -198,7 +199,7 @@ export default function Home() {
                       <span className="text-3xl mb-1">💨</span>
                       <p className="text-sm text-gray-500">Wind</p>
                       <p className="text-xl font-semibold">
-                        {weather.windspeed} km/h
+                        {weather.wind_speed_10m} km/h
                       </p>
                     </div>
 
@@ -206,7 +207,7 @@ export default function Home() {
                       <span className="text-3xl mb-1">🌦️</span>
                       <p className="text-sm text-gray-500">Weather Code</p>
                       <p className="text-xl font-semibold">
-                        {weather.weathercode}
+                        {weather.weather_code}
                       </p>
                     </div>
 

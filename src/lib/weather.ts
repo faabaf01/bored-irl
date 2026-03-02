@@ -22,7 +22,7 @@ export function getWeatherInfo(code: number) {
 
   if ([45, 48].includes(code)) return { label: "Foggy", emoji: "🌫️" };
 
-  if ([51, 53, 55].includes(code)) return { label: "Rain", emoji: "🌧️" };
+  if ([51, 53, 55].includes(code)) return { label: "Drizzle", emoji: "🌧️" };
 
   if ([56, 57].includes(code))
     return { label: "Freezing drizzle", emoji: "🌧️" };
