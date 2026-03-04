@@ -13,15 +13,11 @@ export async function GET(req: NextRequest) {
   const url = `https://api.open-meteo.com/v1/forecast
     ?latitude=${latitude}
     &longitude=${longitude}
-    &daily=temperature_2m_max,temperature_2m_min,uv_index_max,daylight_duration
+    &daily=temperature_2m_max,temperature_2m_min,uv_index_max,daylight_duration,weather_code
     &current=temperature_2m,is_day,wind_speed_10m,weather_code
     &timezone=auto
   `.replace(/\s+/g, "");
-  // https://api.open-meteo.com/v1/forecast?
-  // latitude=43.432&longitude=142.9347
-  // &daily=temperature_2m_max,temperature_2m_min,uv_index_max,daylight_duration
-  // &current=temperature_2m,is_day
-  // &timezone=auto
+
   try {
     const response = await fetch(url, { cache: "no-store" });
     if (!response.ok) {
@@ -29,12 +25,25 @@ export async function GET(req: NextRequest) {
     }
 
     const data = await response.json();
+
+    const daily = data.daily.time.map((date: string, index: number) => ({
+      date,
+      tempMax: data.daily.temperature_2m_max[index],
+      tempMin: data.daily.temperature_2m_min[index],
+      uvIndexMax: data.daily.uv_index_max[index],
+      daylightDuration: data.daily.daylight_duration[index],
+      weatherCode: data.daily.weather_code[index],
+    }));
+
     return Response.json({
-      time: data.current.time,
-      temperature_2m: data.current.temperature_2m,
-      wind_speed_10m: data.current.wind_speed_10m,
-      weather_code: data.current.weather_code,
-      is_day: data.current.is_day,
+      current: {
+        time: data.current.time,
+        temperature_2m: data.current.temperature_2m,
+        wind_speed_10m: data.current.wind_speed_10m,
+        weather_code: data.current.weather_code,
+        is_day: data.current.is_day,
+      },
+      daily,
     });
   } catch (error) {
     console.error("Error fetching weather data:", error);

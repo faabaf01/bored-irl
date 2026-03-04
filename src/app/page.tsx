@@ -14,11 +14,21 @@ import { LOCATIONS } from "@/lib/locations";
 import { useEffect, useState } from "react";
 
 type WeatherData = {
-  time: string;
-  temperature_2m: number;
-  wind_speed_10m: number;
-  weather_code: number;
-  is_day: number;
+  current: {
+    time: string;
+    temperature_2m: number;
+    wind_speed_10m: number;
+    weather_code: number;
+    is_day: number;
+  };
+  daily: {
+    date: string;
+    tempMax: number;
+    tempMin: number;
+    uvIndexMax: number;
+    daylightDuration: number;
+    weatherCode: number;
+  };
 };
 
 export default function Home() {
@@ -84,7 +94,7 @@ export default function Home() {
     };
   }
 
-  const formatted = formatDateTime(weather?.time || "");
+  const formatted = formatDateTime(weather?.current?.time || "");
 
   return (
     <>
@@ -142,44 +152,44 @@ export default function Home() {
                   </div>
                   <div className="py-4">
                     <div className="text-7xl hover:scale-110 transition-transform">
-                      {getWeatherInfo(weather.weather_code)?.emoji}
+                      {getWeatherInfo(weather.current?.weather_code)?.emoji}
                     </div>
                     <div className="text-xl font-semibold">
-                      {getWeatherInfo(weather.weather_code)?.label}
+                      {getWeatherInfo(weather.current?.weather_code)?.label}
                     </div>
                   </div>
 
                   <div className="pb-4">
-                    {isRaining(weather.weather_code) && (
+                    {isRaining(weather.current?.weather_code) && (
                       <p className="text-gray-600">
                         Don&apos;t forget your umbrella!
                       </p>
                     )}
-                    {isClear(weather.weather_code) && (
+                    {isClear(weather.current?.weather_code) && (
                       <p className="text-gray-600">It&apos;s a clear day!</p>
                     )}
-                    {isFoggy(weather.weather_code) && (
+                    {isFoggy(weather.current?.weather_code) && (
                       <p className="text-gray-600">
                         It&apos;s foggy outside, drive safely!
                       </p>
                     )}
-                    {isStormy(weather.weather_code) && (
+                    {isStormy(weather.current?.weather_code) && (
                       <p className="text-gray-600">
                         There&apos;s a storm brewing, stay safe!
                       </p>
                     )}
-                    {isSnowing(weather.weather_code) && (
+                    {isSnowing(weather.current?.weather_code) && (
                       <p className="text-gray-600">
                         Snow is falling, stay warm!
                       </p>
                     )}
-                    {isDrizzling(weather.weather_code) && (
+                    {isDrizzling(weather.current?.weather_code) && (
                       <p className="text-gray-600">
                         There&apos;s nothing more peaceful than a slow, drizzly
                         day.
                       </p>
                     )}
-                    {isCloudy(weather.weather_code) && (
+                    {isCloudy(weather.current?.weather_code) && (
                       <p className="text-gray-600">
                         It&apos;s cloudy, a calm day ahead!
                       </p>
@@ -191,7 +201,7 @@ export default function Home() {
                       <span className="text-3xl mb-1">🌡️</span>
                       <p className="text-sm text-gray-500">Temperature</p>
                       <p className="text-xl font-semibold">
-                        {weather.temperature_2m}°C
+                        {weather.current?.temperature_2m}°C
                       </p>
                     </div>
 
@@ -199,7 +209,7 @@ export default function Home() {
                       <span className="text-3xl mb-1">💨</span>
                       <p className="text-sm text-gray-500">Wind</p>
                       <p className="text-xl font-semibold">
-                        {weather.wind_speed_10m} km/h
+                        {weather.current?.wind_speed_10m} km/h
                       </p>
                     </div>
 
@@ -207,23 +217,23 @@ export default function Home() {
                       <span className="text-3xl mb-1">🌦️</span>
                       <p className="text-sm text-gray-500">Weather Code</p>
                       <p className="text-xl font-semibold">
-                        {weather.weather_code}
+                        {weather.current?.weather_code}
                       </p>
                     </div>
 
                     <div
-                      className={`rounded-xl ${weather.is_day === 1 ? "bg-yellow-100" : "bg-indigo-900 text-white"} shadow p-4 flex flex-col items-center justify-center transition hover:scale-105`}
+                      className={`rounded-xl ${weather.current?.is_day === 1 ? "bg-yellow-100" : "bg-indigo-900 text-white"} shadow p-4 flex flex-col items-center justify-center transition hover:scale-105`}
                     >
                       <span className="text-3xl mb-1">
-                        {weather.is_day === 1 ? "☀️" : "🌙"}
+                        {weather.current?.is_day === 1 ? "☀️" : "🌙"}
                       </span>
                       <p
-                        className={`text-sm ${weather.is_day === 1 ? "text-gray-500" : "text-white"}`}
+                        className={`text-sm ${weather.current?.is_day === 1 ? "text-gray-500" : "text-white"}`}
                       >
                         Day or Night
                       </p>
                       <p className="text-xl font-semibold">
-                        {weather.is_day === 1 ? "Day" : "Night"}
+                        {weather.current?.is_day === 1 ? "Day" : "Night"}
                       </p>
                     </div>
                   </div>
