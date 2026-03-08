@@ -12,24 +12,8 @@ import {
 } from "@/lib/weather";
 import { LOCATIONS } from "@/lib/locations";
 import { useEffect, useState } from "react";
-
-type WeatherData = {
-  current: {
-    time: string;
-    temperature_2m: number;
-    wind_speed_10m: number;
-    weather_code: number;
-    is_day: number;
-  };
-  daily: {
-    date: string;
-    tempMax: number;
-    tempMin: number;
-    uvIndexMax: number;
-    daylightDuration: number;
-    weatherCode: number;
-  }[];
-};
+import WeatherCard from "@/components/WeatherCard";
+import { WeatherData } from "@/types/weatherDataTypes";
 
 export default function Home() {
   const [weather, setWeather] = useState<WeatherData | null>(null);
@@ -197,45 +181,30 @@ export default function Home() {
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <div className="rounded-xl bg-white shadow p-4 flex flex-col items-center justify-center transition hover:scale-105">
-                      <span className="text-3xl mb-1">🌡️</span>
-                      <p className="text-sm text-gray-500">Temperature</p>
-                      <p className="text-xl font-semibold">
-                        {weather.current?.temperature_2m}°C
-                      </p>
-                    </div>
+                    <WeatherCard
+                      icon="🌡️"
+                      label="Temperature"
+                      value={`${weather.current?.temperature_2m}°C`}
+                    />
 
-                    <div className="rounded-xl bg-white shadow p-4 flex flex-col items-center justify-center transition hover:scale-105">
-                      <span className="text-3xl mb-1">💨</span>
-                      <p className="text-sm text-gray-500">Wind</p>
-                      <p className="text-xl font-semibold">
-                        {weather.current?.wind_speed_10m} km/h
-                      </p>
-                    </div>
+                    <WeatherCard
+                      icon="💨"
+                      label="Wind"
+                      value={`${weather.current?.wind_speed_10m} km/h`}
+                    />
 
-                    <div className="rounded-xl bg-white shadow p-4 flex flex-col items-center justify-center transition hover:scale-105">
-                      <span className="text-3xl mb-1">🌦️</span>
-                      <p className="text-sm text-gray-500">Weather Code</p>
-                      <p className="text-xl font-semibold">
-                        {weather.current?.weather_code}
-                      </p>
-                    </div>
+                    <WeatherCard
+                      icon="🌦️"
+                      label="Weather Code"
+                      value={weather.current?.weather_code ?? ""}
+                    />
 
-                    <div
-                      className={`rounded-xl ${weather.current?.is_day === 1 ? "bg-yellow-100" : "bg-indigo-900 text-white"} shadow p-4 flex flex-col items-center justify-center transition hover:scale-105`}
-                    >
-                      <span className="text-3xl mb-1">
-                        {weather.current?.is_day === 1 ? "☀️" : "🌙"}
-                      </span>
-                      <p
-                        className={`text-sm ${weather.current?.is_day === 1 ? "text-gray-500" : "text-white"}`}
-                      >
-                        Day or Night
-                      </p>
-                      <p className="text-xl font-semibold">
-                        {weather.current?.is_day === 1 ? "Day" : "Night"}
-                      </p>
-                    </div>
+                    <WeatherCard
+                      icon={weather.current?.is_day === 1 ? "☀️" : "🌙"}
+                      label="Day or Night"
+                      value={weather.current?.is_day === 1 ? "Day" : "Night"}
+                      weather={weather.current?.is_day === 0}
+                    />
                   </div>
 
                   <div className="my-8">
@@ -244,7 +213,7 @@ export default function Home() {
                       {weather.daily?.map((day, index) => (
                         <div
                           key={index}
-                          className="rounded-xl bg-white shadow p-4 flex flex-col items-center justify-center transition hover:scale-105"
+                          className="rounded-xl bg-blue-100 shadow p-4 flex flex-col items-center justify-center transition hover:scale-105"
                         >
                           <p className="text-sm text-gray-500">
                             {formatDateTime(day.date).date}

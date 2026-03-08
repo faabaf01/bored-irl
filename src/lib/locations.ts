@@ -61,6 +61,12 @@ export const LOCATIONS: Location[] = [
     country: "USA",
   },
   {
+    name: "Buenos Aires",
+    latitude: -34.6037,
+    longitude: -58.3816,
+    country: "Argentina",
+  },
+  {
     name: "Seoul",
     latitude: 37.5665,
     longitude: 126.978,
