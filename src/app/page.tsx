@@ -28,7 +28,7 @@ type WeatherData = {
     uvIndexMax: number;
     daylightDuration: number;
     weatherCode: number;
-  };
+  }[];
 };
 
 export default function Home() {
@@ -235,6 +235,36 @@ export default function Home() {
                       <p className="text-xl font-semibold">
                         {weather.current?.is_day === 1 ? "Day" : "Night"}
                       </p>
+                    </div>
+                  </div>
+
+                  <div className="my-8">
+                    <h1 className="text-2xl font-bold">Daily Weather</h1>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                      {weather.daily?.map((day, index) => (
+                        <div
+                          key={index}
+                          className="rounded-xl bg-white shadow p-4 flex flex-col items-center justify-center transition hover:scale-105"
+                        >
+                          <p className="text-sm text-gray-500">
+                            {formatDateTime(day.date).date}
+                          </p>
+                          <div className="text-5xl my-2">
+                            {getWeatherInfo(day.weatherCode)?.emoji}
+                          </div>
+                          <p className="text-sm text-gray-500">
+                            {getWeatherInfo(day.weatherCode)?.label}
+                          </p>
+                          <div className="flex flex-row space-x-4">
+                            <p className="text-lg font-semibold mt-2">
+                              ↑ {day.tempMax}°C
+                            </p>
+                            <p className="text-lg font-semibold mt-2">
+                              ↓ {day.tempMin}°C
+                            </p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </>
