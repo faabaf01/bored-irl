@@ -83,7 +83,7 @@ export default function Home() {
   return (
     <>
       <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-cyan-100 to-blue-400">
-        <div className="w-full max-w-xl space-y-6 text-center">
+        <div className="w-full max-w-xl space-y-6 text-center my-8">
           <h1 className="text-2xl font-bold">How is the weather today?</h1>
           <div className="px-4 py-2 bg-white rounded-lg shadow-md">
             <select
@@ -216,6 +216,11 @@ export default function Home() {
                           className="rounded-xl bg-blue-100 shadow p-4 flex flex-col items-center justify-center transition hover:scale-105"
                         >
                           <p className="text-sm text-gray-500">
+                            {index === 0
+                              ? "Today • "
+                              : index === 1
+                                ? "Tomorrow • "
+                                : ""}
                             {formatDateTime(day.date).date}
                           </p>
                           <div className="text-5xl my-2">
