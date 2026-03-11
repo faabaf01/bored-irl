@@ -83,7 +83,7 @@ export default function Home() {
   return (
     <>
       <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-cyan-100 to-blue-400">
-        <div className="w-full max-w-xl space-y-6 text-center my-8">
+        <div className="w-full px-8 space-y-6 text-center my-10">
           <h1 className="text-2xl font-bold">How is the weather today?</h1>
           <div className="px-4 py-2 bg-white rounded-lg shadow-md">
             <select
@@ -206,14 +206,15 @@ export default function Home() {
                       weather={weather.current?.is_day === 0}
                     />
                   </div>
-
-                  <div className="my-8">
-                    <h1 className="text-2xl font-bold">Daily Weather</h1>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                  <div className="my-8 max-w-full">
+                    <h1 className="text-2xl font-bold mb-2 px-4">
+                      Daily Weather
+                    </h1>
+                    <div className="flex gap-4 overflow-x-auto px-4 py-2 scrollbar-thin scrollbar-thumb-gray-300 snap-x snap-mandatory scroll-smooth">
                       {weather.daily?.map((day, index) => (
                         <div
                           key={index}
-                          className="rounded-xl bg-blue-100 shadow p-4 flex flex-col items-center justify-center transition hover:scale-105"
+                          className="max-w-48 rounded-xl bg-white/20 backdrop-blur-md shadow-lg p-4 flex flex-col justify-start transition hover:scale-105 ring-1 ring-black/5 snap-start"
                         >
                           <p className="text-sm text-gray-500">
                             {index === 0
@@ -229,12 +230,12 @@ export default function Home() {
                           <p className="text-sm text-gray-500">
                             {getWeatherInfo(day.weatherCode)?.label}
                           </p>
-                          <div className="flex flex-row space-x-4">
-                            <p className="text-lg font-semibold mt-2">
-                              ↑ {day.tempMax}°C
+                          <div className="flex flex-row space-x-4 mt-2">
+                            <p className="text-lg font-semibold">
+                              ↑ {day.tempMax ? day.tempMax.toFixed(1) : "-"}°C
                             </p>
-                            <p className="text-lg font-semibold mt-2">
-                              ↓ {day.tempMin}°C
+                            <p className="text-lg font-semibold">
+                              ↓ {day.tempMin ? day.tempMin.toFixed(1) : "-"}°C
                             </p>
                           </div>
                         </div>
