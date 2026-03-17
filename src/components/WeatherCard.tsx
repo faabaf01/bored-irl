@@ -4,24 +4,23 @@ type WeatherCardProps = {
   icon: string;
   label: string;
   value?: string | number;
-  weather?: boolean;
-}
-const WeatherCard = ({ icon, label, value, weather }: WeatherCardProps) => {
+  isNight?: boolean;
+};
+const WeatherCard = ({ icon, label, value, isNight }: WeatherCardProps) => {
   return (
-     <div
-      className={`rounded-xl shadow p-4 flex flex-col items-center justify-center transition hover:scale-105 ${
-        weather ? "bg-indigo-900 text-white" : "bg-white"
+    <div
+      className={`flex flex-col items-center justify-center rounded-xl p-3 transition hover:scale-105
       }`}
     >
       <span className="text-3xl mb-1">{icon}</span>
 
-      <p className={`text-sm ${weather ? "text-white" : "text-gray-500"}`}>
+      <p className={`text-sm ${isNight ? "text-white/80" : "text-gray-500"}`}>
         {label}
       </p>
 
       <p className="text-xl font-semibold">{value}</p>
     </div>
-  )
-}
+  );
+};
 
 export default WeatherCard

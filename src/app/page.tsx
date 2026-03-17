@@ -79,7 +79,7 @@ export default function Home() {
   }
 
   const formatted = formatDateTime(weather?.current?.time || "");
-
+  const isNight = weather?.current?.is_day === 0;
   return (
     <>
       <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-cyan-100 to-blue-400">
@@ -182,30 +182,39 @@ export default function Home() {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <div
+                    className={`grid grid-cols-2 sm:grid-cols-4 rounded-xl py-4 gap-4 ${
+                      isNight
+                        ? "bg-indigo-900/30 backdrop-blur-md shadow-md ring-1 ring-white/10"
+                        : "bg-white/20 backdrop-blur-md shadow-md ring-1 ring-black/5 text-gray-800"
+                    }`}
+                  >
                     <WeatherCard
                       icon="🌡️"
                       label="Temperature"
                       value={`${weather.current?.temperature_2m}°C`}
+                      isNight={isNight}
                     />
 
                     <WeatherCard
                       icon="💨"
                       label="Wind"
                       value={`${weather.current?.wind_speed_10m} km/h`}
+                      isNight={isNight}
                     />
 
                     <WeatherCard
                       icon="🌦️"
                       label="Weather Code"
                       value={weather.current?.weather_code ?? ""}
+                      isNight={isNight}
                     />
 
                     <WeatherCard
                       icon={weather.current?.is_day === 1 ? "☀️" : "🌙"}
                       label="Day or Night"
                       value={weather.current?.is_day === 1 ? "Day" : "Night"}
-                      weather={weather.current?.is_day === 0}
+                      isNight={isNight}
                     />
                   </div>
                   <div className="my-8 max-w-full">
