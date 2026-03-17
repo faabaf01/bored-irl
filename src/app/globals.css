@@ -16,7 +16,9 @@
 
 @layer base {
   body {
-    @apply bg-background text-foreground antialiased;
+    background-color: var(--background);
+    color: var(--foreground);
+    @apply antialiased;
   }
 }
 
@@ -27,5 +29,28 @@
 
   .app-btn {
     @apply bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90 cursor-pointer;
+  }
+
+  .app-gradient-text {
+    @apply bg-linear-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent;
+    background-size: 300% 300%;
+    animation: gradient-move 6s ease-in-out infinite;
+  }
+
+  .app-gradient-text:hover {
+    animation-play-state: paused;
+  }
+
+}
+
+@keyframes gradient-move {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }

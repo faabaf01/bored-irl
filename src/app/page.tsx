@@ -84,7 +84,9 @@ export default function Home() {
     <>
       <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-cyan-100 to-blue-400">
         <div className="w-full px-8 space-y-6 text-center my-10">
-          <h1 className="text-2xl font-bold">How is the weather today?</h1>
+          <p className="app-gradient-text text-2xl font-bold">
+            How is the weather today?
+          </p>
           <div className="px-4 py-2 bg-white/20 backdrop-blur-sm sticky top-0 z-20 rounded-lg shadow-md">
             <select
               value={location}
