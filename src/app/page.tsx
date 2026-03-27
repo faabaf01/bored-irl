@@ -103,7 +103,7 @@ export default function Home() {
   const isNight = weather?.current?.is_day === 0;
   return (
     <>
-      <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-cyan-100 to-blue-400">
+      <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-pink-200 to-blue-400">
         <div className="w-full px-8 space-y-6 text-center my-10">
           <p className={`${getBackgroundGradient()} text-2xl font-bold`}>
             How is the weather today?
