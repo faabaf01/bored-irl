@@ -19,6 +19,12 @@ export const LOCATIONS: Location[] = [
     country: "Malaysia",
   },
   {
+    name: "Kedah",
+    latitude: 6.1258,
+    longitude: 100.3605,
+    country: "Malaysia",
+  },
+  {
     name: "Tokyo",
     latitude: 35.6762,
     longitude: 139.6503,

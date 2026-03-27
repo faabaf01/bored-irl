@@ -31,16 +31,47 @@
     @apply bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90 cursor-pointer;
   }
 
-  .app-gradient-text {
-    @apply bg-linear-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent;
+  .app-gradient-default {
+    @apply bg-linear-to-r from-cyan-300 via-blue-500 to-cyan-600 bg-clip-text text-transparent;
     background-size: 300% 300%;
     animation: gradient-move 6s ease-in-out infinite;
   }
-
-  .app-gradient-text:hover {
-    animation-play-state: paused;
+  
+  .app-gradient-sunny {
+    @apply bg-linear-to-r from-yellow-300 via-orange-400 to-pink-400 bg-clip-text text-transparent;
+    background-size: 200% 200%;
+    animation: gradient-move 6s ease-in-out infinite;
   }
 
+  .app-gradient-stormy {
+    @apply bg-linear-to-r from-gray-700 via-gray-800 to-gray-900 bg-clip-text text-transparent;
+    background-size: 200% 200%;
+    animation: gradient-move 6s ease-in-out infinite;
+  }
+
+  .app-gradient-rainy {
+    @apply bg-linear-to-r from-blue-400 via-cyan-500 to-indigo-600 bg-clip-text text-transparent;
+    background-size: 200% 200%;
+    animation: gradient-move 6s ease-in-out infinite;
+  }
+
+  .app-gradient-cloudy {
+    @apply bg-linear-to-r from-gray-400 via-gray-500 to-gray-600 bg-clip-text text-transparent;
+    background-size: 200% 200%;
+    animation: gradient-move 6s ease-in-out infinite;
+  }
+
+  .app-gradient-snowy {
+    @apply bg-linear-to-r from-blue-200 via-gray-300 to-white bg-clip-text text-transparent;
+    background-size: 200% 200%;
+    animation: gradient-move 6s ease-in-out infinite;
+  }
+
+  .app-gradient-drizzle {
+    @apply bg-linear-to-r from-blue-300 via-blue-400 to-blue-500 bg-clip-text text-transparent;
+    background-size: 200% 200%;
+    animation: gradient-move 6s ease-in-out infinite;
+  }
 }
 
 @keyframes gradient-move {

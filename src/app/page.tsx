@@ -78,13 +78,27 @@ export default function Home() {
     };
   }
 
+  function getBackgroundGradient() {
+    const code = weather?.current?.weather_code;
+    if (code === undefined) return "app-gradient-default";
+    if (isRaining(code)) return "app-gradient-rainy";
+    if (isStormy(code)) return "app-gradient-stormy";
+    if (isCloudy(code)) return "app-gradient-cloudy";
+    if (isClear(code)) return "app-gradient-sunny";
+    if (isSnowing(code)) return "app-gradient-snowy";
+    if (isDrizzling(code)) return "app-gradient-drizzle";
+
+    return "app-gradient-default";
+  }
+
+
   const formatted = formatDateTime(weather?.current?.time || "");
   const isNight = weather?.current?.is_day === 0;
   return (
     <>
       <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-cyan-100 to-blue-400">
         <div className="w-full px-8 space-y-6 text-center my-10">
-          <p className="app-gradient-text text-2xl font-bold">
+          <p className={`${getBackgroundGradient()} text-2xl font-bold`}>
             How is the weather today?
           </p>
           <div className="px-4 py-2 bg-white/20 backdrop-blur-sm sticky top-0 z-20 rounded-lg shadow-md">
