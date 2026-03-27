@@ -112,7 +112,7 @@ export default function Home() {
             <select
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="w-60 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
+              className="w-60 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300"
             >
               {LOCATIONS.map((location) => (
                 <option key={location.name} value={location.name}>
@@ -123,7 +123,7 @@ export default function Home() {
 
             <button
               onClick={fetchWeather}
-              className="ml-4 px-6 py-2 bg-cyan-600 text-white rounded-full font-bold hover:bg-cyan-500 transition cursor-pointer"
+              className="ml-4 px-6 py-2 bg-blue-300 text-white rounded-full font-bold hover:bg-pink-300 transition cursor-pointer"
             >
               Check Weather
             </button>
@@ -284,7 +284,7 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <footer className="text-center text-gray-500 text-xs my-4">
+      <footer className="text-center text-pink-800 text-xs my-4">
         <p className="text-sm">Data provided by Open-Meteo API</p>
       </footer>
     </>
