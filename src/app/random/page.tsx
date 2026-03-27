@@ -1,16 +1,16 @@
 // app/components/RandomActivity.tsx
 import React from "react";
 
-interface Activity {
-  activity: string;
-  type: string;
-  participants: number;
-}
+// interface Activity {
+//   activity: string;
+//   type: string;
+//   participants: number;
+// }
 
 const RandomActivity = async () => {
-  const res = await fetch("https://bored-api.appbrewery.com/random");
-  if (!res.ok) throw new Error("Failed to fetch activity");
-  const data: Activity = await res.json();
+  // const res = await fetch("https://bored-api.appbrewery.com/random");
+  // if (!res.ok) throw new Error("Failed to fetch activity");
+  // const data: Activity = await res.json();
 
   return (
     <div className="grid grid-cols-1 gap-4 p-4">
@@ -18,9 +18,9 @@ const RandomActivity = async () => {
       <p className="text-lg">Here is a random activity suggestion for you!</p>
 
       <div className="p-4 border rounded-lg shadow-sm">
-        <h2 className="text-xl font-semibold">{data.activity}</h2>
-        <p className="mt-2">Type: {data.type}</p>
-        <p className="mt-2">Participants: {data.participants}</p>
+        <h2 className="text-xl font-semibold">Learn to Code</h2>
+        <p className="mt-2">Type: creative</p>
+        <p className="mt-2">Participants: 2</p>
       </div>
     </div>
   );
