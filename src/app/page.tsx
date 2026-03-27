@@ -14,6 +14,13 @@ import { LOCATIONS } from "@/lib/locations";
 import { useEffect, useState } from "react";
 import WeatherCard from "@/components/WeatherCard";
 import { WeatherData } from "@/types/weatherDataTypes";
+import dynamic from "next/dynamic";
+
+// Dynamically import the MapComponent with SSR disabled
+const DynamicMap = dynamic(() => import("@/components/MapComponent"), {
+  ssr: false,
+  loading: () => <p>Loading map...</p>,
+});
 
 export default function Home() {
   const [weather, setWeather] = useState<WeatherData | null>(null);
@@ -101,7 +108,7 @@ export default function Home() {
           <p className={`${getBackgroundGradient()} text-2xl font-bold`}>
             How is the weather today?
           </p>
-          <div className="px-4 py-2 bg-white/20 backdrop-blur-sm sticky top-0 z-20 rounded-lg shadow-md">
+          <div className="px-4 py-2 bg-white/20 backdrop-blur-sm sticky top-0 z-100 rounded-lg shadow-md">
             <select
               value={location}
               onChange={(e) => setLocation(e.target.value)}
@@ -120,6 +127,10 @@ export default function Home() {
             >
               Check Weather
             </button>
+          </div>
+
+          <div className="">
+            <DynamicMap />
           </div>
 
           {error && <p className="text-red-500">{error}</p>}
@@ -199,7 +210,7 @@ export default function Home() {
                   <div
                     className={`grid grid-cols-2 sm:grid-cols-4 rounded-xl py-4 gap-4 ${
                       isNight
-                        ? "bg-indigo-900/30 backdrop-blur-md shadow-md ring-1 ring-white/10"
+                        ? "bg-blue-800/20 backdrop-blur-md shadow-md ring-1 ring-white/10"
                         : "bg-white/20 backdrop-blur-md shadow-md ring-1 ring-black/5 text-gray-800"
                     }`}
                   >
