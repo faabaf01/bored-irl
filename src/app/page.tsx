@@ -16,26 +16,30 @@ import WeatherCard from "@/components/WeatherCard";
 import { WeatherData } from "@/types/weatherDataTypes";
 import dynamic from "next/dynamic";
 
+export interface MapProps {
+  onSelectLocation: (lat: number, long: number) => void;
+}
+
 // Dynamically import the MapComponent with SSR disabled
-const DynamicMap = dynamic(() => import("@/components/MapComponent"), {
-  ssr: false,
-  loading: () => <p>Loading map...</p>,
-});
+const DynamicMap = dynamic<MapProps>(
+  () => import("@/components/MapComponent"),
+  { ssr: false, loading: () => <p>Loading map...</p> },
+);
 
 export default function Home() {
   const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [location, setLocation] = useState<string>(LOCATIONS[0].name);
+  const [location, setLocation] = useState<string>("");
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const fetchWeather = async () => {
-    const selected = LOCATIONS.find((l) => l.name === location);
-    if (!selected) return;
+  const fetchWeather = async ({ lat, long }: { lat: number; long: number }) => {
+    // const selected = LOCATIONS.find((l) => l.name === location);
+    // if (!selected) return;
     try {
       setLoading(true);
       const response = await fetch(
-        `/api/weather?latitude=${selected.latitude}&longitude=${selected.longitude}`,
+        `/api/weather?latitude=${lat}&longitude=${long}`,
       );
       const data = await response.json();
       setWeather(data);
@@ -58,6 +62,12 @@ export default function Home() {
 
     return () => clearInterval(interval); // cleanup on unmount
   }, [lastUpdated]);
+
+  useEffect(() => {
+    if (!location) return;
+    const [lat, long] = location.split(",");
+    fetchWeather({ lat: Number(lat), long: Number(long) });
+  }, [location]);
 
   function timeAgo(date: Date) {
     const now = new Date();
@@ -98,6 +108,10 @@ export default function Home() {
     return "app-gradient-default";
   }
 
+  const handleSetLocation = (lat: number, long: number) => {
+    setLocation(`${lat},${long}`);
+    fetchWeather({ lat, long });
+  };
 
   const formatted = formatDateTime(weather?.current?.time || "");
   const isNight = weather?.current?.is_day === 0;
@@ -108,7 +122,7 @@ export default function Home() {
           <p className={`${getBackgroundGradient()} text-2xl font-bold`}>
             How is the weather today?
           </p>
-          <div className="px-4 py-2 bg-white/20 backdrop-blur-sm sticky top-0 z-100 rounded-lg shadow-md">
+          {/* <div className="px-4 py-2 bg-white/20 backdrop-blur-sm sticky top-0 z-100 rounded-lg shadow-md">
             <select
               value={location}
               onChange={(e) => setLocation(e.target.value)}
@@ -127,10 +141,10 @@ export default function Home() {
             >
               Check Weather
             </button>
-          </div>
+          </div> */}
 
           <div className="">
-            <DynamicMap />
+            <DynamicMap onSelectLocation={handleSetLocation} />
           </div>
 
           {error && <p className="text-red-500">{error}</p>}
