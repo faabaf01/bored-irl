@@ -164,7 +164,9 @@ export default function Home() {
           )}
 
           {selectedLocation && (
-            <p className="text-lg font-semibold">📍 {selectedLocation.name}</p>
+            <p className="text-lg font-semibold">
+              📍 {selectedLocation.name}, {selectedLocation.country}
+            </p>
           )}
 
           {error && <p className="text-red-500">{error}</p>}
