@@ -10,25 +10,34 @@ import {
   isDrizzling,
   isCloudy,
 } from "@/lib/weather";
-import { LOCATIONS } from "@/lib/locations";
+import { Location, LOCATIONS } from "@/lib/locations";
 import { useEffect, useState } from "react";
 import WeatherCard from "@/components/WeatherCard";
 import { WeatherData } from "@/types/weatherDataTypes";
 import dynamic from "next/dynamic";
+import Loading from "./loading";
 
 export interface MapProps {
-  onSelectLocation: (lat: number, long: number) => void;
+  onSelectLocation: (loc: Location) => void;
 }
+
+// type SelectedLocation = {
+//   name: string;
+//   lat: number;
+//   long: number;
+// };
 
 // Dynamically import the MapComponent with SSR disabled
 const DynamicMap = dynamic<MapProps>(
   () => import("@/components/MapComponent"),
-  { ssr: false, loading: () => <p>Loading map...</p> },
+  { ssr: false, loading: () => <Loading /> },
 );
 
 export default function Home() {
   const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [location, setLocation] = useState<string>("");
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+    null,
+  );
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -64,10 +73,12 @@ export default function Home() {
   }, [lastUpdated]);
 
   useEffect(() => {
-    if (!location) return;
-    const [lat, long] = location.split(",");
-    fetchWeather({ lat: Number(lat), long: Number(long) });
-  }, [location]);
+    if (!selectedLocation) return;
+    fetchWeather({
+      lat: Number(selectedLocation.latitude),
+      long: Number(selectedLocation.longitude),
+    });
+  }, [selectedLocation]);
 
   function timeAgo(date: Date) {
     const now = new Date();
@@ -108,9 +119,9 @@ export default function Home() {
     return "app-gradient-default";
   }
 
-  const handleSetLocation = (lat: number, long: number) => {
-    setLocation(`${lat},${long}`);
-    fetchWeather({ lat, long });
+  const handleSetLocation = (loc: Location) => {
+    setSelectedLocation(loc);
+    fetchWeather({ lat: loc.latitude, long: loc.longitude });
   };
 
   const formatted = formatDateTime(weather?.current?.time || "");
@@ -146,14 +157,17 @@ export default function Home() {
           <div className="">
             <DynamicMap onSelectLocation={handleSetLocation} />
           </div>
-
-          {error && <p className="text-red-500">{error}</p>}
-
           {lastUpdated && (
             <p className="text-xs text-gray-500">
               Updated {timeAgo(lastUpdated)} • Data refreshes every 15 minutes
             </p>
           )}
+
+          {selectedLocation && (
+            <p className="text-lg font-semibold">📍 {selectedLocation.name}</p>
+          )}
+
+          {error && <p className="text-red-500">{error}</p>}
 
           <div className="relative">
             <div

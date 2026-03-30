@@ -24,7 +24,7 @@ const MapComponent = ({ onSelectLocation }: MapProps) => {
   return (
     <MapContainer
       center={position}
-      zoom={10}
+      zoom={8}
       style={{ height: "400px", width: "100%" }}
     >
       <FitBounds />
@@ -38,7 +38,7 @@ const MapComponent = ({ onSelectLocation }: MapProps) => {
           position={[location.latitude, location.longitude]}
           eventHandlers={{
             click: () => {
-              onSelectLocation(location.latitude, location.longitude);
+              onSelectLocation(location);
             },
           }}
         >
