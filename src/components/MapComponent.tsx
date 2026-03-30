@@ -18,33 +18,55 @@ function FitBounds() {
   return null;
 }
 
-const MapComponent = ({ onSelectLocation }: MapProps) => {
+function FlyToLocation({ lat, long }: { lat: number; long: number }) {
+  const map = useMap();
+  useEffect(() => {
+    if (!lat || !long) return;
+
+    map.flyTo([lat, long], 8);
+  }, [map, lat, long]);
+
+  return null;
+}
+
+const MapComponent = ({ onSelectLocation, selectedLocation }: MapProps) => {
   const position: [number, number] = [37.5665, 126.978];
 
   return (
     <MapContainer
       center={position}
-      zoom={8}
+      zoom={10} // Fitbounds will override this initial zoom
       style={{ height: "400px", width: "100%" }}
     >
       <FitBounds />
+      {selectedLocation && (
+        <FlyToLocation
+          lat={selectedLocation.latitude}
+          long={selectedLocation.longitude}
+        />
+      )}
+
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {LOCATIONS.map((location) => (
-        <Marker
-          key={location.name}
-          position={[location.latitude, location.longitude]}
-          eventHandlers={{
-            click: () => {
-              onSelectLocation(location);
-            },
-          }}
-        >
-          <Popup>{location.name}</Popup>
-        </Marker>
-      ))}
+      {LOCATIONS.map((loc) => {
+        // const isSelected = selectedLocation?.latitude === loc.latitude && selectedLocation?.longitude === loc.longitude;
+
+        return (
+          <Marker
+            key={loc.name}
+            position={[loc.latitude, loc.longitude]}
+            eventHandlers={{
+              click: () => {
+                onSelectLocation(loc);
+              },
+            }}
+          >
+            <Popup>{loc.name}</Popup>
+          </Marker>
+        );
+      })}
     </MapContainer>
   );
 };

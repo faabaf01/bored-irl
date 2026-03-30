@@ -19,13 +19,8 @@ import Loading from "./loading";
 
 export interface MapProps {
   onSelectLocation: (loc: Location) => void;
+  selectedLocation: Location | null;
 }
-
-// type SelectedLocation = {
-//   name: string;
-//   lat: number;
-//   long: number;
-// };
 
 // Dynamically import the MapComponent with SSR disabled
 const DynamicMap = dynamic<MapProps>(
@@ -155,7 +150,10 @@ export default function Home() {
           </div> */}
 
           <div className="">
-            <DynamicMap onSelectLocation={handleSetLocation} />
+            <DynamicMap
+              onSelectLocation={handleSetLocation}
+              selectedLocation={selectedLocation}
+            />
           </div>
           {lastUpdated && (
             <p className="text-xs text-gray-500">
