@@ -1,4 +1,5 @@
 'use client';
+import L from "leaflet";
 
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import 'leaflet/dist/leaflet.css'; // Import Leaflet CSS
@@ -29,6 +30,29 @@ function FlyToLocation({ lat, long }: { lat: number; long: number }) {
   return null;
 }
 
+function createWeatherIcon(emoji: string, temp?: number) {
+  return L.divIcon({
+    className: "custom-weather-icon",
+    html: `<div style="
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        font-size:20px;
+      ">
+        <div>${emoji}</div>
+        ${
+          temp !== undefined
+            ? `<div style="font-size:12px;">${temp}°C</div>`
+            : ""
+        }
+      </div>
+    `,
+    iconSize: [50, 50],
+    iconAnchor: [25, 25],
+  });
+}
+
 const MapComponent = ({ onSelectLocation, selectedLocation }: MapProps) => {
   const position: [number, number] = [37.5665, 126.978];
 
@@ -57,6 +81,7 @@ const MapComponent = ({ onSelectLocation, selectedLocation }: MapProps) => {
           <Marker
             key={loc.name}
             position={[loc.latitude, loc.longitude]}
+            icon={createWeatherIcon("☀️", 28)}
             eventHandlers={{
               click: () => {
                 onSelectLocation(loc);
