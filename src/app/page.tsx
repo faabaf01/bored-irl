@@ -10,7 +10,7 @@ import {
   isDrizzling,
   isCloudy,
 } from "@/lib/weather";
-import { Location, LOCATIONS } from "@/lib/locations";
+import { Location } from "@/lib/locations";
 import { useEffect, useState } from "react";
 import WeatherCard from "@/components/WeatherCard";
 import { WeatherData } from "@/types/weatherDataTypes";
@@ -20,7 +20,6 @@ import Loading from "./loading";
 export interface MapProps {
   onSelectLocation: (loc: Location) => void;
   selectedLocation: Location | null;
-  locationsWeather: Record<string, WeatherData>;
 }
 
 // Dynamically import the MapComponent with SSR disabled
@@ -34,30 +33,9 @@ export default function Home() {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     null,
   );
-  const [locationsWeather, setLocationsWeather] = useState({});
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-
-const fetchAllLocationsWeather = async () => {
-  const results: Record<string, WeatherData> = {};
-
-  await Promise.all(
-    LOCATIONS.map(async (loc) => {
-      try {
-        const res = await fetch(
-          `/api/weather?latitude=${loc.latitude}&longitude=${loc.longitude}`,
-        );
-        const data = await res.json();
-        results[loc.name] = data;
-      } catch (err) {
-        console.error(`Failed to fetch weather for ${loc.name}:`, err);
-      }
-    }),
-  );
-
-  setLocationsWeather(results);
-};
 
   const fetchWeather = async ({ lat, long }: { lat: number; long: number }) => {
     // const selected = LOCATIONS.find((l) => l.name === location);
@@ -78,10 +56,6 @@ const fetchAllLocationsWeather = async () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchAllLocationsWeather();
-  }, []);
 
   useEffect(() => {
     if (!lastUpdated) return;
@@ -177,7 +151,6 @@ const fetchAllLocationsWeather = async () => {
 
           <div className="">
             <DynamicMap
-              locationsWeather={locationsWeather}
               onSelectLocation={handleSetLocation}
               selectedLocation={selectedLocation}
             />
