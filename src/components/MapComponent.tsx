@@ -1,10 +1,9 @@
-'use client';
-import L from "leaflet";
+"use client";
 
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
-import 'leaflet/dist/leaflet.css'; // Import Leaflet CSS
-import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css'; // Import compatibility CSS
-import 'leaflet-defaulticon-compatibility'; // Import compatibility JS
+import "leaflet/dist/leaflet.css"; // Import Leaflet CSS
+import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css"; // Import compatibility CSS
+import "leaflet-defaulticon-compatibility"; // Import compatibility JS
 import { LOCATIONS } from "@/lib/locations";
 import { useEffect } from "react";
 import { MapProps } from "@/app/page";
