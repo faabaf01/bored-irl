@@ -1,4 +1,5 @@
 import React from 'react'
+import { motion } from "motion/react";
 
 type WeatherCardProps = {
   icon: string;
@@ -8,9 +9,27 @@ type WeatherCardProps = {
 };
 const WeatherCard = ({ icon, label, value, isNight }: WeatherCardProps) => {
   return (
-    <div
-      className={`flex flex-col items-center justify-center rounded-xl p-3 transition hover:scale-105
+    <motion.div
+      className={`flex flex-col items-center justify-center rounded-xl p-3 
       }`}
+      initial="offscreen"
+      whileInView="onscreen"
+      viewport={{ once: false, amount: 0.8 }}
+      variants={{
+        offscreen: {
+          opacity: 0,
+          y: 150,
+          scale: 0.8,
+        },
+        onscreen: {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+        },
+      }}
+      transition={{
+        duration: 0.4,
+      }}
     >
       <span className="text-3xl mb-1">{icon}</span>
 
@@ -19,7 +38,7 @@ const WeatherCard = ({ icon, label, value, isNight }: WeatherCardProps) => {
       </p>
 
       <p className="text-xl font-semibold">{value}</p>
-    </div>
+    </motion.div>
   );
 };
 

@@ -16,6 +16,7 @@ import WeatherCard from "@/components/WeatherCard";
 import { WeatherData } from "@/types/weatherDataTypes";
 import dynamic from "next/dynamic";
 import Loading from "./loading";
+import { motion } from "motion/react";
 
 export interface MapProps {
   onSelectLocation: (loc: Location) => void;
@@ -119,12 +120,30 @@ export default function Home() {
     fetchWeather({ lat: loc.latitude, long: loc.longitude });
   };
 
+  const box = {
+    width: 50,
+    height: 50,
+    backgroundColor: "#f472b6",
+    borderRadius: 5,
+  };
+
   const formatted = formatDateTime(weather?.current?.time || "");
   const isNight = weather?.current?.is_day === 0;
   return (
     <>
       <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-pink-200 to-blue-400">
         <div className="w-full px-8 space-y-6 text-center my-10">
+          <motion.div
+            style={box}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: 0.4,
+              scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
+            }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          />
           <p className={`${getBackgroundGradient()} text-2xl font-bold`}>
             How is the weather today?
           </p>
