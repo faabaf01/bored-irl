@@ -127,6 +127,29 @@ export default function Home() {
     borderRadius: 5,
   };
 
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: {
+      opacity: 0,
+      y: 40,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+    },
+  };
+
   const formatted = formatDateTime(weather?.current?.time || "");
   const isNight = weather?.current?.is_day === 0;
   return (
@@ -209,9 +232,24 @@ export default function Home() {
                     {formatted.time}
                   </div>
                   <div className="py-4">
-                    <div className="text-7xl hover:scale-110 transition-transform">
+                    <motion.div
+                      className="text-7xl cursor-default"
+                      // style={box}
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{
+                        duration: 0.4,
+                        scale: {
+                          type: "spring",
+                          visualDuration: 0.4,
+                          bounce: 0.5,
+                        },
+                      }}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
                       {getWeatherInfo(weather.current?.weather_code)?.emoji}
-                    </div>
+                    </motion.div>
                     <div className="text-xl font-semibold">
                       {getWeatherInfo(weather.current?.weather_code)?.label}
                     </div>
@@ -293,11 +331,29 @@ export default function Home() {
                     <h1 className="text-2xl font-bold mb-2 px-4">
                       Daily Weather
                     </h1>
-                    <div className="flex gap-4 overflow-x-auto px-4 py-2 scrollbar-thin scrollbar-thumb-gray-300 snap-x snap-mandatory scroll-smooth">
+                    <motion.div
+                      className="flex gap-4 overflow-x-auto px-4 pb-2 pt-6 scrollbar-thin scrollbar-thumb-gray-300 snap-x snap-mandatory scroll-smooth"
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: false }}
+                      variants={containerVariants}
+                    >
                       {weather.daily?.map((day, index) => (
-                        <div
+                        <motion.div
                           key={index}
-                          className="max-w-48 rounded-xl bg-white/20 backdrop-blur-md shadow-lg p-4 flex flex-col justify-start transition hover:scale-105 ring-1 ring-black/5 snap-start"
+                          variants={cardVariants}
+                          className="max-w-48 rounded-xl bg-white/20 backdrop-blur-md shadow-lg p-4 flex flex-col justify-start hover:shadow-2xl hover:bg-white/30 hover:z-10 ring-1 ring-black/5 snap-start"
+                          whileHover={{
+                            scale: 1.05,
+                            y: -8,
+                            rotate: -1,
+                          }}
+                          transition={{
+                            // duration: 0.4,
+                            type: "spring",
+                            stiffness: 300,
+                            damping: 18,
+                          }}
                         >
                           <p className="text-sm text-gray-500">
                             {index === 0
@@ -321,9 +377,9 @@ export default function Home() {
                               ↓ {day.tempMin ? day.tempMin.toFixed(1) : "-"}°C
                             </p>
                           </div>
-                        </div>
+                        </motion.div>
                       ))}
-                    </div>
+                    </motion.div>
                   </div>
                 </>
               )}

@@ -14,7 +14,7 @@ const WeatherCard = ({ icon, label, value, isNight }: WeatherCardProps) => {
       }`}
       initial="offscreen"
       whileInView="onscreen"
-      viewport={{ once: false, amount: 0.8 }}
+      viewport={{ once: true, amount: 0.8 }}
       variants={{
         offscreen: {
           opacity: 0,
